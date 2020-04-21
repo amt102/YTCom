@@ -1,0 +1,118 @@
+{% extends "comments/base.html" %}
+{% block content %}
+
+<!-- video description card -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 d-flex align-items-stretch">
+                <div class="card">
+                    <img class="card-img" src="{{videoInfo.thumbnail}}" alt="Card image">
+                </div>
+            </div>
+
+            <div class="col-sm-6 d-flex align-items-stretch">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{videoInfo.name}}</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Channel Name : {{videoInfo.channelIdTitle}}</li>
+                            <li class="list-group-item">Views : {{videoInfo.viewsCount}}</li>
+                            <li class="list-group-item">Likes : {{videoInfo.likeCount}}</li>
+                            <li class="list-group-item">Dislikes : {{videoInfo.dislikeCount}}</li>
+                            <li class="list-group-item">Comments : {{videoInfo.commentCount}}</li>
+                        </ul>
+                        <br>
+                        <br>
+                        <!-- <form class="pn-buttons" method="post"></form> -->
+                            <div class='row'>
+                                <div class="col-1"></div>
+                                <div class="col-5">
+                                    <button name="pos_btn" class="pn_btn card_btn_p btn btn-success">Positive</button>
+                                </div>
+                                <div class="col-1"></div>
+                                <div calss="col-5">
+                                    <button name="neg_btn" class="pn_btn card_btn_n btn btn-danger">Negative</button>
+                                </div>
+                            </div>
+                        <!-- </form> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h1 class="display-4">Comments</h1>
+            </div>
+        </div>
+
+        <div class="comments_to_show">
+            {% for comment in comments %}
+                <div class="card comment_card">
+                    <div class="card-header">
+                        {{ comment.author }}
+                    </div>
+                    <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{ comment.text }}</p>
+                        <footer class="blockquote-footer">Sentiment Score: {{ comment.sentiment_score }}</footer>
+                    </blockquote>
+                    </div>
+                </div>
+                {% endfor %}
+        </div>
+    </div>
+
+    <!-- parking the video id -->
+    <script type="text/javascript">
+        // var post_url = '/search_sent/'.concat("{{ vid_id }}").concat("/");
+        // var post_url = '/search_sent/';
+        var serializedData = $(this).serialize();
+
+        $(document).ready(function () {
+            $(".pn_btn").click(function () {
+                btn_pressed = this.name
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'search_sent' %}",
+                    data: {
+                        'btn_pressed': btn_pressed,
+                        'video_id': "{{ vid_id }}"
+                    },
+                    success: function (response) {
+                        $('.comments_to_show').html('')
+                        // console.log(response['comments'])
+                        var comments = response['comments']
+                        comments = $.parseJSON(comments)
+                        console.log(comments[0]['fields'])
+                        // $('.comments_to_show').load(post_url);
+
+                        for(comment of comments){
+                            console.log(comment['fields'].text)
+                            break
+                        }
+
+                        var cat_comments = ''
+                        for(comment of comments){
+                                cat_comments += '<div class="card comment_card">' +
+                                    '<div class="card-header">' +
+                                        String(comment['fields'].author) +
+                                    '</div>' +
+                                    '<div class="card-body">' +
+                                        '<blockquote class="blockquote mb-0">' +
+                                            '<p>' + String(comment['fields'].text) + '</p>' +
+                                            '<footer class="blockquote-footer"> Sentiment Score:' + String(comment['fields'].sentiment_score) + '</footer>' +
+                                        '</blockquote>' +
+                                    '</div>' +
+                                '</div>'   
+                        }
+                        $(".comments_to_show").append(cat_comments)
+                    }
+                });
+                return false; //<---- move it here
+            });
+
+        });
+    </script>
+
+{% endblock content %}
