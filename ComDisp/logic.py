@@ -19,6 +19,21 @@ from langdetect import detect
 from ComDisp.models import Comment, videoInfo
 # url_original = "https://www.youtube.com/watch?v=ZyyYQoXr6PQ"
 # video_id = url_original.rsplit("=")[1]
+from ComDisp.database import *
+
+import pandas as pd
+import numpy as np
+import pickle
+from sklearn.externals import joblib
+import matplotlib.pyplot as plt
+from sklearn import svm
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split, RandomizedSearchCV
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score, roc_curve
+from sklearn.naive_bayes import MultinomialNB
+import os
 
 class Helper:
     def __init__(self):
@@ -198,6 +213,12 @@ def getComments(video_id):
         
     # ids,repeat = load_comments(match,collection,ids,repeat)
     ids,repeat,final_list = load_comments(final_list,match,ids,repeat,analyzer)
+    d = DBHelper()
+    if len(final_list)!=0:
+        final_list = detectspam(final_list)
+        d.saveComments(final_list)
+        final_list=[]
+
 
     if next_page_token and not error:
         print('HERE in the while loop')
@@ -211,6 +232,10 @@ def getComments(video_id):
                 # print(next_page_token)
             # ids,repeat = load_comments(match,collection,ids,repeat)
             ids,repeat,final_list = load_comments(final_list,match,ids,repeat,analyzer)
+            if len(final_list)!=0:
+                final_list = detectspam(final_list)
+                d.saveComments(final_list)
+                final_list=[]
             if(repeat>20):
                 print('GETTING OUT: repetition is happening')
                 break
@@ -253,3 +278,41 @@ def getInfoAboutVideo(video_id):
     # print(date)
     v = createVideoObject(s)
     return v
+
+def detectspam(model_list):
+    print("Detecting spam: Inside the function")
+    Array = []
+    for i in range(0,len(model_list)):
+        Array.append(model_list[i].text)
+    print('checking length in detect spam')
+    print('model list ' + str(len(model_list)))
+    print('array length '+ str(len(Array)))
+    modulePath = os.path.dirname(__file__)  # get current directory
+	# filePath = os.path.join(modulePath, 'MV1')
+	# with open(filePath, 'rb') as f:
+	# 	obj=pickle.load(f)
+    vectorizer = pickle.load(open(os.path.join(modulePath, 'MV1'), 'rb'))
+    tranformer = pickle.load(open(os.path.join(modulePath, 'MT1'), 'rb'))
+    model = pickle.load(open(os.path.join(modulePath, 'M1'), 'rb'))
+    rf = pickle.load(open(os.path.join(modulePath, 'M2'), 'rb'))
+    random_search = pickle.load(open(os.path.join(modulePath, 'M3'), 'rb'))
+    count_vect = pickle.load(open(os.path.join(modulePath, 'MCV1'), 'rb'))
+    vectorizer.transform(Array)
+    x_train_counts = count_vect.transform(Array)
+    new = tranformer.transform(x_train_counts)
+    Pred_M = model.predict(new)
+    Pred_RF = rf.predict(new)
+    Pred_RS = random_search.predict(new)
+    print('Inside detect spam: PRINTING Pred')
+    # print(Pred_M)
+    # print('NEXT')
+    # print(Pred_RF)
+    # print('NEXT 2')
+    # print(Pred_RS)
+    # print('For loop 2')
+    for i in range(len(Pred_M)):
+        if Pred_M[i]==1 or Pred_RS[i]==1 or Pred_RF[i]==1:
+            model_list[i].isSpam =True
+            # print(Array[i])
+            # print()
+    return model_list

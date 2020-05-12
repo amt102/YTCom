@@ -15,6 +15,7 @@ class Comment(models.Model):
     sentiment_score = models.FloatField(default=0.0)
     sentiment_stat = models.TextField(default=None)
     lang = models.CharField(max_length=10,default='en')
+    isSpam = models.BooleanField(default=False)
 
 class videoInfo(models.Model):
     channelId = models.TextField()

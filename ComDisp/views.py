@@ -24,7 +24,7 @@ def search(request):
         video_id = returnId(vurl)
         print(video_id)
         d = DBHelper()
-        if d.commentsExists(video_id):
+        if d.videoExists(video_id):
             # we can delete them and then retrieve again or work on them only
             print('In Views: Comments exist')
             comments = d.retriveAllComments(video_id) #database.py
@@ -33,8 +33,12 @@ def search(request):
             print("In views: Inside else block")
             v = getInfoAboutVideo(video_id)   #logic.py
             comments = getComments(video_id)  #logic.py
-            d.saveComments(comments)   #database.py
+            print('DONE WITH EXTRACTION');
+            # d.saveComments(comments)   #database.py
             d.saveVideoInfo(v)         #database.py
+            comments = d.retriveAllComments(video_id)
+            print('DONE SAVING IT');
+        # detectspam(comments)
         
         # v = getInfoAboutVideo(video_id)   #logic.py
         # comments = getComments(video_id)  #logic.py
@@ -124,6 +128,3 @@ def search_sent(request):
     except Exception as e:
         exp = type(e).__name__
         return JsonResponse({"wohowo": exp}, status=200)
-
-    
-

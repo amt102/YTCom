@@ -65,6 +65,20 @@ class DBHelper:
             print('In database.py :COMMENTS DOESNT EXIST IN EXCEPT')
             return False
         return False
+    
+    def videoExists(self,videoId):
+        try:
+            exist = self.video_helper.filter(videoId=videoId).exists()
+            if exist:
+                print('In database.py :video ALREADY EXIST')
+                return True
+            else:
+                print('In database.py: video DOESNT EXIST IN ELSE')
+                return False
+        except:
+            print('In database.py :video DOESNT EXIST IN EXCEPT')
+            return False
+        return False
 
     # deleting all comments 
     def deleteComments(self,videoId):
