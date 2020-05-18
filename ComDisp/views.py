@@ -85,7 +85,6 @@ def search_sent_page(request, video_id):
     #     d.saveComments(comments)   #database.py
     #     d.saveVideoInfo(v)         #database.py
     
-    
     # if 'pos_btn' == btn:
     #     print("pos dabaya")
     #     return HttpResponse("<h1>positive comments</h1>")
