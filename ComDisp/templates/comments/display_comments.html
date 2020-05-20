@@ -33,7 +33,52 @@
                                 <div calss="col-5">
                                     <button name="neg_btn" class="pn_btn card_btn_n btn btn-danger">Negative</button>
                                 </div>
+                                <div class="col-1"></div>
+                                <div calss="col-5">
+                                    <button name="like_count" class="pn_btn card_btn_n btn btn-danger">Most Liked</button>
+                                </div>
+                                <!-- <div class="col-1"></div>
+                                <div calss="col-5">
+                                    <button name="dislikes" class="pn_btn card_btn_n btn btn-danger">Most Disliked</button>
+                                </div> -->
+                                <div class="col-1"></div>
+                                <div calss="col-5">
+                                    <button name="replies_count" class="pn_btn card_btn_n btn btn-danger">Most Replied</button>
+                                </div>
+                                <div class="col-1"></div>
+                                <div calss="col-5">
+                                    <button name="sensitive" class="pn_btn card_btn_n btn btn-danger">Sensitive Info</button>
+                                </div>
+                                <div class="col-1"></div>
+                                <div calss="col-5">
+                                    <button name="spam" class="pn_btn card_btn_n btn btn-danger">Spam Comments</button>
+                                </div>
+                                <div class="col-1"></div>
+                                <div calss="col-5">
+                                    <button name="graph" class="pn_btn card_btn_n btn btn-danger">Trying Graphs</button>
+                                </div>
                             </div>
+                            <!-- <form action="trial" method="POST" target="_blank">
+                                <input type="submit" id="btn-form-submit"/>
+                                </form>
+                                <script>
+                                    $('#btn-submit').click( function(){ $('#btn-form-submit').click(); } );
+                             </script> -->
+
+                             <form action="trial" method="POST" class="tm-search-form tm-section-pad-2" target="_blank">
+                                {% csrf_token %}
+                                <!-- <div class="form-row tm-search-form-row">
+                                    <div class="col-4 form-group tm-form-element tm-form-element-2">
+                                        <button name="com_btn" id="get_com" class="btn btn-primary btn-primary-cus tm-btn-search">get comments</button>
+                                    </div>
+                                    <div class="col-4">
+                                    </div>
+                                </div> -->
+                                <input type="submit" id="btn-form-submit"/>
+                            </form>
+                            <script>
+                                $('#btn-submit').click( function(){ $('#btn-form-submit').click(); } );
+                            </script>
                         <!-- </form> -->
                     </div>
                 </div>
@@ -42,7 +87,7 @@
 
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
-                <h1 class="display-4">Comments</h1>
+                <center><h1 class="display-4">Comments</h1></center>
             </div>
         </div>
 
@@ -68,7 +113,6 @@
         // var post_url = '/search_sent/'.concat("{{ vid_id }}").concat("/");
         // var post_url = '/search_sent/';
         var serializedData = $(this).serialize();
-
         $(document).ready(function () {
             $(".pn_btn").click(function () {
                 btn_pressed = this.name
