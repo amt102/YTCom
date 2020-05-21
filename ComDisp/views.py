@@ -17,6 +17,12 @@ def home(request):
 #     elif 'anal_btn' in request.POST:
 #         pass
 
+@csrf_exempt
+def graph(request):
+    pn_btn = request.POST['btn_type']
+    # print(request.POST)
+    print(pn_btn)
+    return HttpResponse("Ho gya")
 
 def plotit(request):
     data = ["I love to study in my school. The teacher is not that cool though",

@@ -8,4 +8,5 @@ urlpatterns = [
     path('search_sent/<video_id>', views.search_sent_page, name='ss_page'),
     path('lda',views.plotit,name='plotit'),
     path('trial',views.trial,name='trial'),
+    path('graph', views.graph, name='graph')
 ]
