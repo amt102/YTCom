@@ -52,11 +52,11 @@ def search(request):
             print("In views: Inside else block")
             v = getInfoAboutVideo(video_id)   #logic.py
             comments = getComments(video_id)  #logic.py
-            print('DONE WITH EXTRACTION');
+            print('DONE WITH EXTRACTION')
             # d.saveComments(comments)   #database.py
             d.saveVideoInfo(v)         #database.py
             comments = d.retriveAllComments(video_id)
-            print('DONE SAVING IT');
+            print('DONE SAVING IT')
         # detectspam(comments)
         
         # v = getInfoAboutVideo(video_id)   #logic.py
@@ -78,6 +78,7 @@ def search(request):
 
         act_url = 'search_sent/' + str(video_id)
 
+        
         if 'com_btn' in request.POST:
             return render(request,'comments/display_comments.html', {'comments':comments, 'videoInfo':v, 'act_url': act_url, 'vid_id': video_id})
         elif 'anal_btn' in request.POST:
