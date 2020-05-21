@@ -7,6 +7,7 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from ComDisp.topic_modeling import *
+from django.contrib import messages
 
 def home(request):
     return render(request, 'comments/home.html') 
@@ -32,6 +33,8 @@ def trial(request):
     return render(request, 'comments/LDA.html')
 
 def search(request):
+    # storage = messages.get_messages(request)
+    # storage.used = True
     vurl = request.POST['vid_url']
     if check(vurl):
         video_id = returnId(vurl)
@@ -45,6 +48,9 @@ def search(request):
         else:
             print("In views: Inside else block")
             v = getInfoAboutVideo(video_id)   #logic.py
+            if v==None:
+                messages.error(request, f"Unable to retrieve for this url. Try another one.")
+                return render(request, 'comments/home.html', {'show_message': True})
             comments = getComments(video_id)  #logic.py
             print('DONE WITH EXTRACTION');
             # d.saveComments(comments)   #database.py
@@ -76,10 +82,14 @@ def search(request):
             return render(request,'comments/display_comments.html', {'comments':comments, 'videoInfo':v, 'act_url': act_url, 'vid_id': video_id})
         elif 'anal_btn' in request.POST:
             pass
+            # messages.error(request, f"Analysed")
+            # return render(request, 'comments/home.html', {'show_message': True})
         
     else:
         print('ERROR OCCURED: Invalid link given')
-        return HttpResponse("Error")
+        messages.error(request, f"Invalid format entered. Enter the complete link of the video. eg: https://www.youtube.com/watch?v=4lWyYVL-X1I")
+        # messages.info(request, 'Your password has been changed successfully!')
+        return render(request, 'comments/home.html', {'show_message': True})
     return HttpResponse("Done")
 
 

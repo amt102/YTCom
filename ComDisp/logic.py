@@ -261,6 +261,8 @@ def getInfoAboutVideo(video_id):
     api_key = "AIzaSyAoI2MkdcP2mI1okW5iEDip8hEC8ZNpy4E"
     youtube = build('youtube','v3',developerKey=api_key)
     s = youtube.videos().list(id = video_id,part = "snippet,statistics",).execute()
+    if(s['items'] == []):
+        return None
     title = s['items'][0]['snippet']['channelTitle']
     # description = s['items'][0]['snippet']['description']
     # statistics = s['items'][0]['statistics']
