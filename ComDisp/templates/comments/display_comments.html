@@ -24,40 +24,6 @@
                         <br>
                         <br>
                         <!-- <form class="pn-buttons" method="post"></form> -->
-                            <div class='row'>
-                                <div class="col-1"></div>
-                                <div class="col-5">
-                                    <button name="pos_btn" class="pn_btn card_btn_p btn btn-success">Positive</button>
-                                </div>
-                                <div class="col-1"></div>
-                                <div calss="col-5">
-                                    <button name="neg_btn" class="pn_btn card_btn_n btn btn-danger">Negative</button>
-                                </div>
-                                <div class="col-1"></div>
-                                <div calss="col-5">
-                                    <button name="like_count" class="pn_btn card_btn_n btn btn-danger">Most Liked</button>
-                                </div>
-                                <!-- <div class="col-1"></div>
-                                <div calss="col-5">
-                                    <button name="dislikes" class="pn_btn card_btn_n btn btn-danger">Most Disliked</button>
-                                </div> -->
-                                <div class="col-1"></div>
-                                <div calss="col-5">
-                                    <button name="replies_count" class="pn_btn card_btn_n btn btn-danger">Most Replied</button>
-                                </div>
-                                <div class="col-1"></div>
-                                <div calss="col-5">
-                                    <button name="sensitive" class="pn_btn card_btn_n btn btn-danger">Sensitive Info</button>
-                                </div>
-                                <div class="col-1"></div>
-                                <div calss="col-5">
-                                    <button name="spam" class="pn_btn card_btn_n btn btn-danger">Spam Comments</button>
-                                </div>
-                                <div class="col-1"></div>
-                                <div calss="col-5">
-                                    <button name="graph" class="pn_btn card_btn_n btn btn-danger">Trying Graphs</button>
-                                </div>
-                            </div>
                             <!-- <form action="trial" method="POST" target="_blank">
                                 <input type="submit" id="btn-form-submit"/>
                                 </form>
@@ -90,6 +56,48 @@
                 <center><h1 class="display-4">Comments</h1></center>
             </div>
         </div>
+        
+        <!-- comment buttons -->
+        <div class='row'>
+            <div class="col-1"></div>
+            <div class="col-3">
+                <button name="pos_btn" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Positive</button>
+            </div>
+            <div class="col-1"></div>
+            <div calss="col-3">
+                <button name="neg_btn" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Negative</button>
+            </div>
+            <div class="col-1"></div>
+            <div calss="col-3">
+                <button name="like_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Most Liked</button>
+            </div>
+            <!-- <div class="col-1"></div>
+            <div calss="col-5">
+                <button name="dislikes" class="pn_btn card_btn_n btn btn-danger">Most Disliked</button>
+            </div> -->
+            <div class="col-1"></div>
+            <div calss="col-3">
+                <button name="replies_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Most Replied</button>
+            </div>
+        </div>
+        <br>
+        <div class='row'>
+            <div class="col-1"></div>
+            <div calss="col-4">
+                <button name="sensitive" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Sensitive Info</button>
+            </div>
+            <div class="col-1"></div>
+            <div calss="col-4">
+                <button name="spam" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Spam Comments</button>
+            </div>
+            <div class="col-1"></div>
+            <div calss="col-4">
+                <form action="{% url 'graph' %}" id="graph_form" method="POST" target="_blank">
+                    <input type="hidden" name="btn_type" value="asdf" id="graph_hidden"/>
+                    <input type="submit" name="graph" class="gph_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Trying graphs"/>
+                </form>
+            </div>
+        </div>
 
         <div class="comments_to_show">
             {% for comment in comments %}
@@ -113,14 +121,15 @@
         // var post_url = '/search_sent/'.concat("{{ vid_id }}").concat("/");
         // var post_url = '/search_sent/';
         var serializedData = $(this).serialize();
+        var pnbtn_pressed = 'neutral'
         $(document).ready(function () {
             $(".pn_btn").click(function () {
-                btn_pressed = this.name
+                pnbtn_pressed = this.name
                 $.ajax({
                     type: "POST",
                     url: "{% url 'search_sent' %}",
                     data: {
-                        'btn_pressed': btn_pressed,
+                        'btn_pressed': pnbtn_pressed,
                         'video_id': "{{ vid_id }}"
                     },
                     success: function (response) {
@@ -155,7 +164,13 @@
                 });
                 return false; //<---- move it here
             });
-
+            $(".gph_btn").click(function () {
+                console.log(pnbtn_pressed);
+                $("#graph_form").submit( function(eventObj) {
+                    $("#graph_hidden").val(pnbtn_pressed)
+                    return true;        
+                }); 
+            });
         });
     </script>
 
