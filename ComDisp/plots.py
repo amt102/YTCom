@@ -3,6 +3,7 @@ import plotly.express as px
 import pandas as pd
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
+from datetime import datetime
 # datetime.strptime('2020-05-04T06:54:33Z','%Y-%m-%dT%H:%M:%SZ')
 class Plotter:
 
@@ -21,11 +22,15 @@ class Plotter:
         likes =[]
         replies =[]
         spaml=[]
+        dtemp = []
+        text=[]
         for comment in comments:
             # print(type(comment.date))
             s.append(comment.sentiment_score)
             d.append(comment.date)
+            dtemp.append(comment.date.strftime("%Y-%m-%d"))
             likes.append(comment.like_count)
+            text.append(comment.text)
             replies.append(comment.replies_count)
 
             total+=1
@@ -43,7 +48,7 @@ class Plotter:
                 spaml.append(1)
             else:
                 spaml.append(0)
-        dict2 = {'date':d,'sentiment_score':s,'like_count':likes,'replies':replies,"isSpam":spaml}
+        dict2 = {'date':d,'sentiment_score':s,'like_count':likes,'replies':replies,"isSpam":spaml,'dates':dtemp,'text':text}
         df2 = pd.DataFrame(dict2)
         dict ={'type' : ['Positive', 'Negative', 'Neutral', 'Has Sensitive Info', 'No Senstive Info', 'Spam', 'Not A Spam', 'Total'],
         'number':[pos,neg,neutral,sensitive,int(total-sensitive),spam,int(total-spam),total] }
@@ -100,10 +105,18 @@ class Plotter:
             marker_colors=c,pull=[0.1, 0, 0.2, 0])])            
         return plot(fig,auto_open=False, output_type='div')
 
-    def timegraph(self,df,xname,yname,title):
-        fig = px.line(df, x=xname, y=yname, title=title)
+    def timegraph(self,df,xname,yname,title,htext):
+        fig = px.line(df, x=xname, y=yname, title=title,hover_name=htext)
         fig.update_xaxes(rangeslider_visible=True)  
         return plot(fig,auto_open=False, output_type='div')      
+
+    def histogram(self,df):
+        # counts, bins = np.histogram(df.dates, bins=range(0, 60, 5))
+        # bins = 0.5 * (bins[:-1] + bins[1:])
+        # fig = px.bar(x=bins, y=counts, labels={'x':'total_bill', 'y':'count'})
+
+        fig = px.histogram(df, x="dates",title="Number of comments distribution over Days",color="dates")
+        return plot(fig,auto_open=False, output_type='div')
 
     def startPLot(self,comments,btn):
         df,df2= self.collectStats(comments)
@@ -131,8 +144,10 @@ class Plotter:
         spam_bar = self.twoBarGraph(df['type'][5:7],df['number'][5:7],title,hovertext,color2)
         spam_pie = self.pieChart(df['type'][5:7],df['number'][5:7],None)
 
-        likes_series = self.timegraph(df2,'date','like_count','Analysing Likes Count of Comments')
-        replie_series = self.timegraph(df2,'date','replies','Analysing Replies Count of Comments')
+        likes_series = self.timegraph(df2,'date','like_count','Analysing Likes Count of Comments','text')
+        replie_series = self.timegraph(df2,'date','replies','Analysing Replies Count of Comments','text')
+        
+        frequency = self.histogram(df2)
 
-        return [sentiment_bar,si_bar,spam_bar,sentiment_pie,si_pie,spam_pie,likes_series,replie_series]
+        return [sentiment_bar,si_bar,spam_bar,sentiment_pie,si_pie,spam_pie,likes_series,replie_series,frequency]
         # sentiment_fig.show()

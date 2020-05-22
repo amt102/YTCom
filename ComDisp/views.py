@@ -80,11 +80,15 @@ def graph(request):
     print(pn_btn)
     d = DBHelper()
     p = Plotter()
-    comments = getAptComments(pn_btn,vid)
-    if pn_btn =='neutral':
-        plots = p.startPLot(comments,pn_btn)
-        return render(request,'comments/allPlots.html',context = {'sentibar':plots[0],'sibar':plots[1],'spambar':plots[2],'sentipie':plots[3],'sipie':plots[4],'spampie':plots[5],'likes':plots[6],'replies':plots[7]})
-    return render(request, 'comments/trial.html')
+    # comments = getAptComments(pn_btn,vid)
+    try:
+        comments =d.retriveAllComments(vid)
+    except:
+        comments=[]
+    # if pn_btn =='neutral':
+    plots = p.startPLot(comments,pn_btn)
+    return render(request,'comments/allPlots.html',context = {'sentibar':plots[0],'sibar':plots[1],'spambar':plots[2],'sentipie':plots[3],'sipie':plots[4],'spampie':plots[5],'likes':plots[6],'replies':plots[7],'frequency':plots[8]})
+    # return render(request, 'comments/trial.html')
 
 def plotit(request):
     data = ["I love to study in my school. The teacher is not that cool though",
@@ -97,6 +101,7 @@ def plotit(request):
     return render(request, 'comments/LDA.html', context={'vis': vis})
 
 def trial(request):
+    print('IN trial')
     return render(request, 'comments/LDA.html')
 
 def search(request):
@@ -237,6 +242,7 @@ def search_sent(request):
             print("In views: Inside else block of spam")
             comments_rtv=[]
     else:
+        print('Control is coming here')
         comments_rtv=[]
 
 
