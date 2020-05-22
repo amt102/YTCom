@@ -40,7 +40,10 @@
 
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
+            <font size="6"
+          face="roboto"> 
                 <center><h1 class="display-4">Comments</h1></center>
+                </font>
             </div>
         </div>
         
@@ -64,7 +67,7 @@
                 <form action="{% url 'graph' %}" id="graph_form" method="POST" target="_blank">
                     <input type="hidden" name="btn_type" value="asdf" id="graph_hidden"/>
                     <input type="hidden" name="video_id" value="{{ vid_id }}" id="graph_hidden_id"/>
-                    <input type="submit" name="graph" class="gph_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Trying graphs"/>
+                    <input type="submit" name="graph" class="gph_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="View Graphs"/>
                 </form>
 
                 <form action="trial" method="POST" target="_blank">

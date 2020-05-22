@@ -87,7 +87,8 @@ def graph(request):
         comments=[]
     # if pn_btn =='neutral':
     plots = p.startPLot(comments,pn_btn)
-    return render(request,'comments/allPlots.html',context = {'sentibar':plots[0],'sibar':plots[1],'spambar':plots[2],'sentipie':plots[3],'sipie':plots[4],'spampie':plots[5],'likes':plots[6],'replies':plots[7],'frequency':plots[8]})
+    url = 'https://www.youtube.com/watch?v='+vid
+    return render(request,'comments/allPlots.html',context = {'url':url,'sentibar':plots[0],'sibar':plots[1],'spambar':plots[2],'sentipie':plots[3],'sipie':plots[4],'spampie':plots[5],'likes':plots[6],'replies':plots[7],'frequency':plots[8]})
     # return render(request, 'comments/trial.html')
 
 def plotit(request):
