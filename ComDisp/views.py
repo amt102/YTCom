@@ -8,6 +8,7 @@ from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
 from ComDisp.topic_modeling import *
 from django.contrib import messages
+from ComDisp.plots import *
 
 def home(request):
     return render(request, 'comments/home.html') 
@@ -18,12 +19,72 @@ def home(request):
 #     elif 'anal_btn' in request.POST:
 #         pass
 
+def getAptComments(btn,video_id):
+    d = DBHelper()
+    comments_rtv=[]
+    if btn == 'pos_btn':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api')
+            comments_rtv = d.retrivePosComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block")
+            comments_rtv=[]
+            # v = getInfoAboutVideo(video_id)   #logic.py
+            # comments_rtv = getComments(video_id)  #logic.py
+            # d.saveComments(comments_rtv)   #database.py
+            # d.saveVideoInfo(v)    
+    elif btn == 'neg_btn':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api')
+            comments_rtv = d.retriveNegComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block")
+            comments_rtv=[]
+    elif btn in ["like_count","replies_count"]:
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api')
+            pat = "-"+btn
+            comments_rtv = d.retriveSortedComments(video_id,pat) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block")
+            comments_rtv=[]
+    elif btn == 'sensitive':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api')
+            comments_rtv = d.retriveSensitiveComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block")
+            comments_rtv=[]
+    elif btn == 'spam':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api in spam')
+            comments_rtv = d.retriveSpamComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            comments_rtv=[]
+    else:
+        print("In views: Inside else block of spam")
+        comments_rtv = d.retriveAllComments(video_id)
+    return comments_rtv
+
+
 @csrf_exempt
 def graph(request):
+    print('PLotting graphs in views')
     pn_btn = request.POST['btn_type']
-    # print(request.POST)
+    vid = request.POST['vid_id']
     print(pn_btn)
-    return HttpResponse("Ho gya")
+    d = DBHelper()
+    p = Plotter()
+    comments = getAptComments(pn_btn,vid)
+    if pn_btn =='neutral':
+        plots = p.startPLot(comments,pn_btn)
+        return render(request,'comments/allPlots.html',context = {'sentibar':plots[0],'sibar':plots[1],'spambar':plots[2],'sentipie':plots[3],'sipie':plots[4],'spampie':plots[5],'likes':plots[6],'replies':plots[7]})
+    return render(request, 'comments/trial.html')
 
 def plotit(request):
     data = ["I love to study in my school. The teacher is not that cool though",

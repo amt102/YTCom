@@ -19,10 +19,27 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script> -->
     
 </head>
-<body>
-  <h1>LET'S SEE SOME PLOTS FOR </h1>>
-    <!-- {% autoescape off %}
-  {{ vis }}
-  {% endautoescape %} -->
+<body style="background-color:black;">
+    <br>
+    
+    <font size="6"
+          face="roboto"
+          color="white"> 
+  <center><h1>LET'S SEE SOME PLOTS FOR ALL THE COMMENTS</h1></center>
+    </font>
+    <br>
+    {{likes | safe}}
+    <br>
+    {{replies | safe}}
+<br>    
+  {{ sentibar | safe }}
+  {{ sentipie | safe }}
+  <br>
+  {{ sibar | safe}}
+  {{ sipie | safe}}
+  <br>
+  {{ spambar | safe}}
+  {{ spampie | safe}}
+  
 </body>
 </html>

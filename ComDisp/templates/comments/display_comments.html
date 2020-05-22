@@ -94,6 +94,7 @@
             <div calss="col-4">
                 <form action="{% url 'graph' %}" id="graph_form" method="POST" target="_blank">
                     <input type="hidden" name="btn_type" value="asdf" id="graph_hidden"/>
+                    <input type="hidden" name="vid_id" value="{{vid_id}}" id="graph_hidden"/>
                     <input type="submit" name="graph" class="gph_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Trying graphs"/>
                 </form>
             </div>

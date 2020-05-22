@@ -5,7 +5,7 @@ class Comment(models.Model):
     video_id = models.TextField()
     comment_id = models.TextField()
     text = models.TextField()
-    date = models.TextField()
+    date = models.DateTimeField()
     author = models.TextField()
     author_channel_url = models.URLField()
     like_count = models.IntegerField()
