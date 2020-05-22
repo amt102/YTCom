@@ -103,11 +103,16 @@ def plotit(request):
 
 @csrf_exempt
 def trial(request):
-    print('IN trial')
+    print('IN trial for topic modeling')
     pn_btn = request.POST['btn_type']
     vid = request.POST['video_id']
     print(request.POST)
     print(pn_btn)
+    comments = getAptComments(pn_btn,vid)
+    data = []
+    for comment in comments:
+        data.append(comment.text)
+    vis  =  modelTopic(data)
     print('****yoho*****')
     return render(request, 'comments/LDA.html')
 
