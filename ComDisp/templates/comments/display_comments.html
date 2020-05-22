@@ -31,20 +31,7 @@
                                     $('#btn-submit').click( function(){ $('#btn-form-submit').click(); } );
                              </script> -->
 
-                             <form action="trial" method="POST" class="tm-search-form tm-section-pad-2" target="_blank">
-                                {% csrf_token %}
-                                <!-- <div class="form-row tm-search-form-row">
-                                    <div class="col-4 form-group tm-form-element tm-form-element-2">
-                                        <button name="com_btn" id="get_com" class="btn btn-primary btn-primary-cus tm-btn-search">get comments</button>
-                                    </div>
-                                    <div class="col-4">
-                                    </div>
-                                </div> -->
-                                <input type="submit" id="btn-form-submit"/>
-                            </form>
-                            <script>
-                                $('#btn-submit').click( function(){ $('#btn-form-submit').click(); } );
-                            </script>
+                            
                         <!-- </form> -->
                     </div>
                 </div>
@@ -58,58 +45,54 @@
         </div>
         
         <!-- comment buttons -->
-        <div class='row'>
-            <div class="col-1"></div>
-            <div class="col-3">
+        <div class='btn-group btn-group-justified'>
                 <button name="pos_btn" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Positive</button>
-            </div>
-            <div class="col-1"></div>
-            <div calss="col-3">
+                
                 <button name="neg_btn" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Negative</button>
-            </div>
-            <div class="col-1"></div>
-            <div calss="col-3">
+               
                 <button name="like_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Most Liked</button>
-            </div>
-            <!-- <div class="col-1"></div>
-            <div calss="col-5">
-                <button name="dislikes" class="pn_btn card_btn_n btn btn-danger">Most Disliked</button>
-            </div> -->
-            <div class="col-1"></div>
-            <div calss="col-3">
+                
                 <button name="replies_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Most Replied</button>
-            </div>
         </div>
         <br>
-        <div class='row'>
-            <div class="col-1"></div>
-            <div calss="col-4">
+        <div class='btn-group btn-group-justified'>
+
                 <button name="sensitive" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Sensitive Info</button>
-            </div>
-            <div class="col-1"></div>
-            <div calss="col-4">
+            
                 <button name="spam" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Spam Comments</button>
-            </div>
-            <div class="col-1"></div>
-            <div calss="col-4">
+            
                 <form action="{% url 'graph' %}" id="graph_form" method="POST" target="_blank">
                     <input type="hidden" name="btn_type" value="asdf" id="graph_hidden"/>
-                    <input type="hidden" name="vid_id" value="{{vid_id}}" id="graph_hidden"/>
+                    <input type="hidden" name="video_id" value="{{ vid_id }}" id="graph_hidden_id"/>
                     <input type="submit" name="graph" class="gph_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Trying graphs"/>
                 </form>
-            </div>
+
+                <form action="trial" method="POST" target="_blank">
+                    {% csrf_token %}
+                    <input type="submit" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" id="btn-form-submit"/>
+                </form>
         </div>
 
         <div class="comments_to_show">
             {% for comment in comments %}
                 <div class="card comment_card">
                     <div class="card-header">
-                        {{ comment.author }}
+                        <p class="comment-head"><a class="author" href="{{ comment.author_channel_url }}">{{ comment.author }}</a>    ({{ comment.date }})  <span class="sentiment">{{ comment.sentiment_score }}</span></p>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body comment-body">
                     <blockquote class="blockquote mb-0">
-                        <p>{{ comment.text }}</p>
-                        <footer class="blockquote-footer">Sentiment Score: {{ comment.sentiment_score }}</footer>
+                        <p class="comment-text">{{ comment.text }}</p>
+                        <footer class="blockquote-footer">
+                            <p class="comment-text">
+                            <i class="fas fa-thumbs-up">: {{comment.like_count}}</i> | <i class="fas fa-reply">: {{ comment.replies_count }}</i>
+
+                            {% if comment.isSpam %}
+                            <span calss='spam' style="color: red; float: right;">
+                                SPAM
+                            </span>
+                            {% endif %}
+                            </p>
+                        </footer>
                     </blockquote>
                     </div>
                 </div>
@@ -121,7 +104,7 @@
     <script type="text/javascript">
         // var post_url = '/search_sent/'.concat("{{ vid_id }}").concat("/");
         // var post_url = '/search_sent/';
-        var serializedData = $(this).serialize();
+        {% comment %} var serializedData = $(this).serialize(); {% endcomment %}
         var pnbtn_pressed = 'neutral'
         $(document).ready(function () {
             $(".pn_btn").click(function () {
@@ -147,18 +130,31 @@
                         }
 
                         var cat_comments = ''
+                        var spam_message = ''
                         for(comment of comments){
+                                spam_message = ""
+                                if (comment['fields'].isSpam){
+                                    spam_message = '<span calss="spam" style="color: red; float: right;">' +
+                                        'SPAM' +
+                                    '</span>'
+                                }
+
                                 cat_comments += '<div class="card comment_card">' +
                                     '<div class="card-header">' +
-                                        String(comment['fields'].author) +
+                                        '<p class="comment-head"><a class="author" href=' + String(comment['fields'].author_channel_url) + ">" + String(comment['fields'].author) + "</a>" + String(comment['fields'].date) + '<span class="sentiment">' + String(comment['fields'].sentiment_score) + '</span></p>' + 
                                     '</div>' +
-                                    '<div class="card-body">' +
+                                    '<div class="card-body comment-body">' +
                                         '<blockquote class="blockquote mb-0">' +
-                                            '<p>' + String(comment['fields'].text) + '</p>' +
-                                            '<footer class="blockquote-footer"> Sentiment Score:' + String(comment['fields'].sentiment_score) + '</footer>' +
+                                            '<p class="comment-text">' + String(comment['fields'].text) + '</p>' +
+                                            '<footer class="blockquote-footer">' +
+                                                '<p class="comment-text">' +
+                                                    '<i class="fas fa-thumbs-up">:' + String(comment['fields'].like_count) + '</i> | <i class="fas fa-reply">:' + String(comment['fields'].replies_count) + '</i>' +
+                                                    spam_message +
+                                                '</p>' +
+                                            '</footer>' +
                                         '</blockquote>' +
                                     '</div>' +
-                                '</div>'   
+                                '</div>'
                         }
                         $(".comments_to_show").append(cat_comments)
                     }
