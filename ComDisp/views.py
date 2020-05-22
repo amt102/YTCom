@@ -101,9 +101,26 @@ def plotit(request):
     vis = modelTopic(data)
     return render(request, 'comments/LDA.html', context={'vis': vis})
 
+@csrf_exempt
 def trial(request):
     print('IN trial')
+    pn_btn = request.POST['btn_type']
+    vid = request.POST['video_id']
+    print(request.POST)
+    print(pn_btn)
+    print('****yoho*****')
     return render(request, 'comments/LDA.html')
+
+@csrf_exempt
+def hate(request):
+    print('IN hate')
+    pn_btn = request.POST['btn_type']
+    vid = request.POST['video_id']
+    print(request.POST)
+    print(pn_btn)
+    print('****yoho*****')
+    return HttpResponse('Hate speech')
+
 
 def search(request):
     # storage = messages.get_messages(request)
@@ -149,11 +166,15 @@ def search(request):
         print(v)
         print(v.name)
 
+        desc = v.description
+        if len(desc) > 280:
+            desc = desc[:280] + "..."
+
         act_url = 'search_sent/' + str(video_id)
 
         
         if 'com_btn' in request.POST:
-            return render(request,'comments/display_comments.html', {'comments':comments, 'videoInfo':v, 'act_url': act_url, 'vid_id': video_id})
+            return render(request,'comments/display_comments.html', {'comments':comments, 'videoInfo':v, 'act_url': act_url, 'vid_id': video_id, 'desc': desc})
         elif 'anal_btn' in request.POST:
             pass
             # messages.error(request, f"Analysed")
