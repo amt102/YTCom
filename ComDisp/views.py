@@ -76,7 +76,7 @@ def getAptComments(btn,video_id):
 def graph(request):
     print('PLotting graphs in views')
     pn_btn = request.POST['btn_type']
-    vid = request.POST['vid_id']
+    vid = request.POST['video_id']
     print(pn_btn)
     d = DBHelper()
     p = Plotter()

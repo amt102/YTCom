@@ -322,7 +322,6 @@ select.tm-select.form-control:not([size]):not([multiple]) { height: 100%; }
 	padding: 13px 30px;
 	text-transform: uppercase;
 }
-
 .card_btn_n{
 	margin-right:15px;
 	margin-left:auto;
@@ -333,13 +332,11 @@ select.tm-select.form-control:not([size]):not([multiple]) { height: 100%; }
 	padding: 13px 30px;
 	text-transform: uppercase;
 }
-
 .pn-buttons{
 	padding: 0;
 	margin: 0;
 	width: 100%;
 }
-
 .comment_card{
 	margin-top: 3px;
 } */

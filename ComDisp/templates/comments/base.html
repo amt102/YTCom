@@ -25,10 +25,6 @@
     {% else %}
         <title>YTComm</title>
     {% endif %}
-    <!-- <script>
-        alert('{{ message }}');
-    </script> -->
-    
 </head>
 <body>
     <div class="tm-main-content" id="top">
@@ -56,29 +52,6 @@
                 </div>
             </div>
         </div>
-<!-- 
-        <div>
-            {% if some_flag %}
-    <div id="some_flag" title="Some Flag">
-        <p>Some Text Here</p>
-    </div>
-{% endif %}
-        </div> -->
-        
-        <!-- {% if messages %}
-<ul class="messages">
-    {% for message in messages %}
-    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %} -->
-<!-- {% if messages %}
-        {% for message in messages %}
-         {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
-
-        {% endfor %}
-
-    {% endif %} -->
 
         {% block content %}{% endblock %}
         
