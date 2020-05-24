@@ -355,7 +355,7 @@ select.tm-select.form-control:not([size]):not([multiple]) { height: 100%; }
 
 .pn_btn{
 	margin-left: 5px;
-	margin-right: 5px;
+	margin-right: 6px;
 	margin-bottom: 20px; 
 }
 
@@ -376,4 +376,8 @@ select.tm-select.form-control:not([size]):not([multiple]) { height: 100%; }
 
 .comment_card{
 	margin-bottom: 5px;
+}
+
+.col-4 {
+    max-width: 32.4%;
 }

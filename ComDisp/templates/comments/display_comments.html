@@ -48,44 +48,46 @@
         
         <!-- comment buttons -->
         <div class='btn-group btn-group-justified'>
-                <button name="pos_btn" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Positive</button>
+                <button name="pos_btn" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" style="margin-right: 6px;">Positive</button>
                 
-                <button name="neg_btn" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Negative</button>
+                <button name="neg_btn" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" style="margin-right: 6px;">Negative</button>
                
-                <button name="like_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Most Liked</button>
-                
-                <button name="replies_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Most Replied</button>
+                <button name="like_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" style="margin-right: 6px;">Most Liked</button>
         </div>
         <br>
         <div class='btn-group btn-group-justified'>
 
-                <button name="sensitive" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Sensitive Info</button>
+                <button name="replies_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" style="background-color: #008CBA; border-color:#008CBA; margin-right: 6px;">Most Replied</button>
+    
+                <button name="sensitive" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" style="background-color: #008CBA; border-color:#008CBA; margin-right: 6px;">Sensitive Info</button>
             
-                <button name="spam" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Spam Comments</button>
+                <button name="spam" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" style="background-color: #008CBA; border-color:#008CBA; margin-right: 6px;">Spam Comments</button>
 
-                <div>
-                <form action="{% url 'graph' %}" id="graph_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
-                    <input type="hidden" name="btn_type" value="asdf" id="graph_hidden"/>
-                    <input type="hidden" name="video_id" value="{{ vid_id }}" id="graph_hidden_id"/>
-                    <input type="submit" name="graph" class="gph_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="View Graphs"/>
-                </form>
-                </div>
+        </div>
+        <div class='row' style="overflow-x: auto; overflow-y: hidden;">
+            <div class="col-4" style="padding: 0; margin-left: 18px; max-width: 32.4%;">
+            <form action="{% url 'graph' %}" id="graph_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
+                <input type="hidden" name="btn_type" value="asdf" id="graph_hidden"/>
+                <input type="hidden" name="video_id" value="{{ vid_id }}" id="graph_hidden_id"/>
+                <input type="submit" name="graph" class="gph_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="View Graphs" style="background-color: #4CAF50; border-color:#4CAF50"/>
+            </form>
+            </div>
 
-                <div>
-                <form action="{% url 'trial' %}" id="trial_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
-                    <input type="hidden" name="btn_type" value="asdf" id="trial_hidden"/>
-                    <input type="hidden" name="video_id" value="{{ vid_id }}" id="trial_hidden_id"/>
-                    <input type="submit" name="trial" class="topic_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Topic Modeling"/>
-                </form>
-                </div>
+            <div class="col-4" style="padding: 0; max-width: 32.4%;">
+            <form action="{% url 'trial' %}" id="trial_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
+                <input type="hidden" name="btn_type" value="asdf" id="trial_hidden"/>
+                <input type="hidden" name="video_id" value="{{ vid_id }}" id="trial_hidden_id"/>
+                <input type="submit" name="trial" class="topic_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Topic Modeling" style="background-color: #4CAF50; border-color:#4CAF50"/>
+            </form>
+            </div>
 
-                <div>
-                <form action="{% url 'hate' %}" id="hate_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
-                    <input type="hidden" name="btn_type" value="asdf" id="hate_hidden"/>
-                    <input type="hidden" name="video_id" value="{{ vid_id }}" id="hate_hidden_id"/>
-                    <input type="submit" name="trial" class="hate_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Hate Speech"/>
-                </form>
-                </div>
+            <div class="col-4" style="padding: 0; max-width: 32.4%;">
+            <form action="{% url 'hate' %}" id="hate_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
+                <input type="hidden" name="btn_type" value="asdf" id="hate_hidden"/>
+                <input type="hidden" name="video_id" value="{{ vid_id }}" id="hate_hidden_id"/>
+                <input type="submit" name="trial" class="hate_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Hate Speech" style="background-color: #4CAF50; border-color:#4CAF50"/>
+            </form>
+            </div>
         </div>
 
         <div class="comments_to_show">
