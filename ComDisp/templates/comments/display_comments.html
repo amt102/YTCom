@@ -13,7 +13,7 @@
             <div class="col-sm-6 d-flex align-items-stretch">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{videoInfo.name}}</h5>
+                       <a href={{ videoInfo.videoUrl}} target="_blank"> <h5 class="card-title">{{videoInfo.name}}</h5></a>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Channel Name : {{videoInfo.channelIdTitle}}</li>
                             <li class="list-group-item">Views : {{videoInfo.viewsCount}}</li>
@@ -55,14 +55,53 @@
                 <button name="like_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Most Liked</button>
                 
                 <button name="replies_count" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Most Replied</button>
+        
+                <button name="sensitive" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Sensitive Info</button>
+
+                
         </div>
         <br>
         <div class='btn-group btn-group-justified'>
 
-                <button name="sensitive" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Sensitive Info</button>
+                {% comment %} <button name="sensitive" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Sensitive Info</button> {% endcomment %}
             
+                <button name="notspam" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Not Spam Comments</button>
+
                 <button name="spam" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Spam Comments</button>
 
+                <button name="hate" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Hate Comments</button>
+
+                <button name="offensive" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Offensive Comments</button>
+
+                {% comment %} <button name="notspam" class="pn_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger">Not Spam Comments</button> {% endcomment %}
+
+                {% comment %} <div>
+                <form action="{% url 'graph' %}" id="graph_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
+                    <input type="hidden" name="btn_type" value="asdf" id="graph_hidden"/>
+                    <input type="hidden" name="video_id" value="{{ vid_id }}" id="graph_hidden_id"/>
+                    <input type="submit" name="graph" class="gph_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="View Graphs"/>
+                </form>
+                </div>
+
+                <div>
+                <form action="{% url 'trial' %}" id="trial_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
+                    <input type="hidden" name="btn_type" value="asdf" id="trial_hidden"/>
+                    <input type="hidden" name="video_id" value="{{ vid_id }}" id="trial_hidden_id"/>
+                    <input type="submit" name="trial" class="topic_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Topic Modeling"/>
+                </form>
+                </div>
+
+                <div>
+                <form action="{% url 'hate' %}" id="hate_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
+                    <input type="hidden" name="btn_type" value="asdf" id="hate_hidden"/>
+                    <input type="hidden" name="video_id" value="{{ vid_id }}" id="hate_hidden_id"/>
+                    <input type="submit" name="trial" class="hate_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Word clouds"/>
+                </form>
+                </div> {% endcomment %}
+        </div>
+        <br>
+        <center>
+        <div class='btn-group btn-group-justified'>
                 <div>
                 <form action="{% url 'graph' %}" id="graph_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
                     <input type="hidden" name="btn_type" value="asdf" id="graph_hidden"/>
@@ -83,10 +122,11 @@
                 <form action="{% url 'hate' %}" id="hate_form" method="POST" target="_blank" style="padding:0; margin:0 5px 20px 0">
                     <input type="hidden" name="btn_type" value="asdf" id="hate_hidden"/>
                     <input type="hidden" name="video_id" value="{{ vid_id }}" id="hate_hidden_id"/>
-                    <input type="submit" name="trial" class="hate_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Hate Speech"/>
+                    <input type="submit" name="trial" class="hate_btn card_btn_n btn btn-primary-cus tm-btn-search btn-danger" value="Word clouds"/>
                 </form>
                 </div>
         </div>
+        </center>
 
         <div class="comments_to_show">
             {% for comment in comments %}
@@ -156,7 +196,7 @@
 
                                 cat_comments += '<div class="card comment_card">' +
                                     '<div class="card-header">' +
-                                        '<p class="comment-head"><a class="author" href=' + String(comment['fields'].author_channel_url) + ">" + String(comment['fields'].author) + "</a>" + String(comment['fields'].date) + '<span class="sentiment"> Sentiment Score: ' + String(comment['fields'].sentiment_score) + '</span></p>' + 
+                                        '<p class="comment-head"><a class="author" href=' + String(comment['fields'].author_channel_url) + ">" + String(comment['fields'].author) + "</a> (" + String(comment['fields'].date) + ')<span class="sentiment"> Sentiment Score: ' + String(comment['fields'].sentiment_score) + '</span></p>' + 
                                     '</div>' +
                                     '<div class="card-body comment-body">' +
                                         '<blockquote class="blockquote mb-0">' +

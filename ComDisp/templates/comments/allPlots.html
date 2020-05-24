@@ -26,7 +26,7 @@
           face="roboto"
           color="white"> 
   <center><h1>LET'S SEE SOME PLOTS FOR ALL THE COMMENTS</h1></center>
-  <center><h3>For video {{url}}</h3></center>
+  <center><h3>For video <a href={{url}} target="_blank">{{url}}</a></h3></center>
     </font>
     <br>
       {{frequency | safe}}
@@ -43,6 +43,12 @@
   <br>
   {{ spambar | safe}}
   {{ spampie | safe}}
+  <br>
+  <font size="6"
+          face="roboto"
+          color="white"> 
+  <center><h4>Hate Speech Analysis</h4></center></font>
+  {{hate | safe}}
   
 </body>
 </html>

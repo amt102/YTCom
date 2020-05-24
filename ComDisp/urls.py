@@ -10,4 +10,5 @@ urlpatterns = [
     path('trial',views.trial,name='trial'),
     path('graph', views.graph, name='graph'),
     path('hate', views.hate, name='hate'),
+    path('team',views.team,name='team')
 ]

@@ -35,6 +35,13 @@ from sklearn.metrics import confusion_matrix, classification_report, accuracy_sc
 from sklearn.naive_bayes import MultinomialNB
 import os
 
+from hatesonar import Sonar
+from nltk.corpus import stopwords
+
+# from matplotlib import pyplot as plt
+# from wordcloud import WordCloud
+
+
 class Helper:
     def __init__(self):
         pass
@@ -216,6 +223,7 @@ def getComments(video_id):
     d = DBHelper()
     if len(final_list)!=0:
         final_list = detectspam(final_list)
+        final_list = hateSpeech(final_list)
         d.saveComments(final_list)
         final_list=[]
 
@@ -234,6 +242,7 @@ def getComments(video_id):
             ids,repeat,final_list = load_comments(final_list,match,ids,repeat,analyzer)
             if len(final_list)!=0:
                 final_list = detectspam(final_list)
+                final_list = hateSpeech(final_list)
                 d.saveComments(final_list)
                 final_list=[]
             if(repeat>20):
@@ -246,6 +255,7 @@ def createVideoObject(vjson):
         channelId = vjson["items"][0]["snippet"]["channelId"],
         channelIdTitle = vjson["items"][0]["snippet"]["channelTitle"],
         videoId = vjson["items"][0]["id"],
+        videoUrl= "https://www.youtube.com/watch?v="+vjson["items"][0]["id"],
         name = vjson["items"][0]["snippet"]["title"],
         description = vjson['items'][0]['snippet']['description'],
         thumbnail = vjson["items"][0]["snippet"]["thumbnails"]["standard"]["url"],
@@ -318,3 +328,17 @@ def detectspam(model_list):
             # print(Array[i])
             # print()
     return model_list
+
+def hateSpeech(comments):
+    sonar = Sonar()
+    print('Inside hatespeech')
+    print('Comments len ='+str(len(comments)))
+    for i in range(len(comments)):
+        x = sonar.ping(text=comments[i].text)
+        if x['top_class'] == "hate_speech":
+            comments[i].hateType = 'hate'
+        elif x['top_class'] == "offensive_language":
+            comments[i].hateType = 'offensive'
+        else:
+            comments[i].hateType = 'neutral'
+    return comments

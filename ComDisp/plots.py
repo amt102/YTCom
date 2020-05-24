@@ -4,6 +4,10 @@ import pandas as pd
 from plotly.offline import plot
 from plotly.graph_objs import Scatter
 from datetime import datetime
+from wordcloud import WordCloud, STOPWORDS
+from PIL import Image
+import numpy as np
+import os
 # datetime.strptime('2020-05-04T06:54:33Z','%Y-%m-%dT%H:%M:%SZ')
 class Plotter:
 
@@ -14,6 +18,9 @@ class Plotter:
         pos =0
         neg=0
         neutral=0
+        neut =0
+        hate=0
+        offensive=0
         sensitive =0
         spam =0
         total =0
@@ -41,6 +48,13 @@ class Plotter:
             else:
                 neutral+=1
 
+            if comment.hateType == 'hate':
+                hate+=1
+            elif comment.hateType == 'offensive':
+                offensive+=1
+            else:
+                neut+=1
+
             if comment.has_sensitive_content:
                 sensitive+=1
             if comment.isSpam:
@@ -50,8 +64,8 @@ class Plotter:
                 spaml.append(0)
         dict2 = {'date':d,'sentiment_score':s,'like_count':likes,'replies':replies,"isSpam":spaml,'dates':dtemp,'text':text}
         df2 = pd.DataFrame(dict2)
-        dict ={'type' : ['Positive', 'Negative', 'Neutral', 'Has Sensitive Info', 'No Senstive Info', 'Spam', 'Not A Spam', 'Total'],
-        'number':[pos,neg,neutral,sensitive,int(total-sensitive),spam,int(total-spam),total] }
+        dict ={'type' : ['Positive', 'Negative', 'Neutral', 'Has Sensitive Info', 'No Senstive Info', 'Spam', 'Not A Spam','Hate Speech','Offensive Language','Neutral', 'Total'],
+        'number':[pos,neg,neutral,sensitive,int(total-sensitive),spam,int(total-spam),hate,offensive,neut,total] }
         df  = pd.DataFrame(dict)
         return df,df2
 
@@ -106,7 +120,7 @@ class Plotter:
         return plot(fig,auto_open=False, output_type='div')
 
     def timegraph(self,df,xname,yname,title,htext):
-        fig = px.line(df, x=xname, y=yname, title=title,hover_name=htext)
+        fig = px.scatter(df, x=xname, y=yname, title=title,hover_name=htext)
         fig.update_xaxes(rangeslider_visible=True)  
         return plot(fig,auto_open=False, output_type='div')      
 
@@ -149,5 +163,18 @@ class Plotter:
         
         frequency = self.histogram(df2)
 
-        return [sentiment_bar,si_bar,spam_bar,sentiment_pie,si_pie,spam_pie,likes_series,replie_series,frequency]
+        color2= ['red', 'gold', 'yellowgreen']
+        hate_pie = self.pieChart(df['type'][7:10],df['number'][7:10],color2)
+
+        return [sentiment_bar,si_bar,spam_bar,sentiment_pie,si_pie,spam_pie,likes_series,replie_series,frequency,hate_pie]
         # sentiment_fig.show()
+
+    def makeWordCloud(self,s):
+        print('In word cloud')
+        modulePath = os.path.dirname(__file__)
+        print('Path is '+ str(modulePath))
+        maskArray = np.array(Image.open(os.path.join(modulePath, 'static/img/youtube.png')))
+        cloud = WordCloud(background_color = "white", max_words = 200, mask = maskArray, stopwords = set(STOPWORDS))
+        cloud.generate(s)
+        cloud.to_file(os.path.join(modulePath, 'static/img/wordcloud.png'))
+        print('Exiting word cloud')
