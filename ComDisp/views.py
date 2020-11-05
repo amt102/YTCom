@@ -9,10 +9,12 @@ from django.views.decorators.csrf import csrf_exempt
 from ComDisp.topic_modeling import *
 from django.contrib import messages
 from ComDisp.plots import *
-
+import pandas as pd
 def home(request):
     return render(request, 'comments/home.html') 
 
+def team(request):
+    return render(request,'comments/team.html')
 # def search(request):
 #     if 'com_btn' in request.POST:
 #         pass
@@ -66,6 +68,30 @@ def getAptComments(btn,video_id):
             # v = d.retriveVideoInfo(video_id)          #database.py
         else:
             comments_rtv=[]
+    elif btn== 'hate':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api in spam')
+            comments_rtv = d.retriveHateComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block of spam")
+            comments_rtv=[]
+    elif btn== 'offensive':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api in spam')
+            comments_rtv = d.retriveOffensiveComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block of spam")
+            comments_rtv=[]
+    elif btn== 'notspam':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api in spam')
+            comments_rtv = d.retriveNotSpamComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block of spam")
+            comments_rtv=[]
     else:
         print("In views: Inside else block of spam")
         comments_rtv = d.retriveAllComments(video_id)
@@ -88,7 +114,7 @@ def graph(request):
     # if pn_btn =='neutral':
     plots = p.startPLot(comments,pn_btn)
     url = 'https://www.youtube.com/watch?v='+vid
-    return render(request,'comments/allPlots.html',context = {'url':url,'sentibar':plots[0],'sibar':plots[1],'spambar':plots[2],'sentipie':plots[3],'sipie':plots[4],'spampie':plots[5],'likes':plots[6],'replies':plots[7],'frequency':plots[8]})
+    return render(request,'comments/allPlots.html',context = {'url':url,'sentibar':plots[0],'sibar':plots[1],'spambar':plots[2],'sentipie':plots[3],'sipie':plots[4],'spampie':plots[5],'likes':plots[6],'replies':plots[7],'frequency':plots[8],'hate':plots[9]})
     # return render(request, 'comments/trial.html')
 
 def plotit(request):
@@ -110,21 +136,45 @@ def trial(request):
     print(pn_btn)
     comments = getAptComments(pn_btn,vid)
     data = []
+    count=0
     for comment in comments:
         data.append(comment.text)
-    vis  =  modelTopic(data)
+        count+=1
+        if count == 21:
+            break
+    if len(data)==0:
+        return render(request, 'comments/error.html')
+    try:
+        vis  =  modelTopic(data)
+    except:
+         return render(request, 'comments/error.html')     
     print('****yoho*****')
     return render(request, 'comments/LDA.html')
+    # d = DBHelper()
+    # v = d.retriveVideoInfo(vid)
+    # desc = v.description
+    # if len(desc) > 280:
+    #     desc = desc[:280] + "..."
+    # act_url = 'search_sent/' + str(vid)
+
+    # return render(request,'comments/display_comments.html', {'comments':comments, 'videoInfo':v, 'act_url': act_url, 'vid_id': vid, 'desc': desc})
 
 @csrf_exempt
 def hate(request):
-    print('IN hate')
+    print('IN wordcloud')
     pn_btn = request.POST['btn_type']
     vid = request.POST['video_id']
     print(request.POST)
     print(pn_btn)
+    p = Plotter()
+    comments = getAptComments(pn_btn,vid)
+    text=""
+    for comment in comments:
+         text = text+comment.text
+         text+='\n'
     print('****yoho*****')
-    return HttpResponse('Hate speech')
+    p.makeWordCloud(text)
+    return render(request,'comments/wordcloud.html')
 
 
 def search(request):
@@ -140,6 +190,13 @@ def search(request):
             print('In Views: Comments exist')
             comments = d.retriveAllComments(video_id) #database.py
             v = d.retriveVideoInfo(video_id)          #database.py
+            print(v)
+            # t=[]
+            # for comment in comments:
+            #     t.append(comment.text)
+            # dict ={'comment_text':t}
+            # p = pd.DataFrame(dict)
+            # p.to_csv("Comments.csv")
         else:
             print("In views: Inside else block")
             v = getInfoAboutVideo(video_id)   #logic.py
@@ -164,12 +221,12 @@ def search(request):
         # work on comments and video Info
         # comments = retriveAllComments(video_id) #database.py
         # v = retriveVideoInfo(video_id)          #database.py
-        print('FINAL LEN OF RESULT IS')
-        print(len(comments))
-        print('Uploading to DATABASE')
-        print('Checking videoInfo object = ')
-        print(v)
-        print(v.name)
+        # print('FINAL LEN OF RESULT IS')
+        # print(len(comments))
+        # print('Uploading to DATABASE')
+        # print('Checking videoInfo object = ')
+        # print(v)
+        # print(v.name)
 
         desc = v.description
         if len(desc) > 280:
@@ -264,6 +321,30 @@ def search_sent(request):
         if d.commentsExists(video_id):
             print('Button presssed and we are just retrieving the comments, not from api in spam')
             comments_rtv = d.retriveSpamComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block of spam")
+            comments_rtv=[]
+    elif btn== 'notspam':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api in spam')
+            comments_rtv = d.retriveNotSpamComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block of spam")
+            comments_rtv=[]
+    elif btn== 'hate':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api in spam')
+            comments_rtv = d.retriveHateComments(video_id) #database.py
+            # v = d.retriveVideoInfo(video_id)          #database.py
+        else:
+            print("In views: Inside else block of spam")
+            comments_rtv=[]
+    elif btn== 'offensive':
+        if d.commentsExists(video_id):
+            print('Button presssed and we are just retrieving the comments, not from api in spam')
+            comments_rtv = d.retriveOffensiveComments(video_id) #database.py
             # v = d.retriveVideoInfo(video_id)          #database.py
         else:
             print("In views: Inside else block of spam")

@@ -13,7 +13,7 @@
             <div class="col-sm-6 d-flex align-items-stretch">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{videoInfo.name}}</h5>
+                       <a href={{ videoInfo.videoUrl}} target="_blank"> <h5 class="card-title">{{videoInfo.name}}</h5></a>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Channel Name : {{videoInfo.channelIdTitle}}</li>
                             <li class="list-group-item">Views : {{videoInfo.viewsCount}}</li>
@@ -89,6 +89,7 @@
             </form>
             </div>
         </div>
+        </center>
 
         <div class="comments_to_show">
             {% for comment in comments %}
@@ -158,7 +159,7 @@
 
                                 cat_comments += '<div class="card comment_card">' +
                                     '<div class="card-header">' +
-                                        '<p class="comment-head"><a class="author" href=' + String(comment['fields'].author_channel_url) + ">" + String(comment['fields'].author) + "</a>" + String(comment['fields'].date) + '<span class="sentiment"> Sentiment Score: ' + String(comment['fields'].sentiment_score) + '</span></p>' + 
+                                        '<p class="comment-head"><a class="author" href=' + String(comment['fields'].author_channel_url) + ">" + String(comment['fields'].author) + "</a> (" + String(comment['fields'].date) + ')<span class="sentiment"> Sentiment Score: ' + String(comment['fields'].sentiment_score) + '</span></p>' + 
                                     '</div>' +
                                     '<div class="card-body comment-body">' +
                                         '<blockquote class="blockquote mb-0">' +

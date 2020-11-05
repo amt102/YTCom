@@ -82,6 +82,35 @@ class DBHelper:
             print('Error: In retrieving the spam comments')
         return comml
 
+    def retriveNotSpamComments(self,videoId):
+        #returns zero or more comments
+        try:
+            comml = self.comment_helper.filter(video_id=videoId, isSpam=False).order_by("date")
+            print('RETRIEVED the spam comments = len'+str(len(comml)))
+        except:
+            comml=[]
+            print('Error: In retrieving the spam comments')
+        return comml
+
+    def retriveHateComments(self,videoId):
+        #returns zero or more comments
+        try:
+            comml = self.comment_helper.filter(video_id=videoId, hateType='hate').order_by("date")
+            print('RETRIEVED the spam comments = len'+str(len(comml)))
+        except:
+            comml=[]
+            print('Error: In retrieving the spam comments')
+        return comml
+
+    def retriveOffensiveComments(self,videoId):
+        #returns zero or more comments
+        try:
+            comml = self.comment_helper.filter(video_id=videoId, hateType='offensive').order_by("date")
+            print('RETRIEVED the spam comments = len'+str(len(comml)))
+        except:
+            comml=[]
+            print('Error: In retrieving the spam comments')
+        return comml
     # # get comments with positive sentiment
     # def retrivePosComments(self, videoId):
     #     try:
