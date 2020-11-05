@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <link rel="stylesheet" type="text/css" href="{% static 'comments/main.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-
+    <script src="https://kit.fontawesome.com/19abcd469a.js"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
     
     <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -25,6 +26,7 @@
         <title>YTComm</title>
     {% endif %}
 </head>
+{% comment %} <body style="background-color:black;"> {% endcomment %}
 <body>
     <div class="tm-main-content" id="top">
         <div class="tm-top-bar-bg"></div>
@@ -33,8 +35,8 @@
             <div class="container">
                 <div class="row">
                     <nav class="navbar navbar-expand-lg narbar-light">
-                        <a class="navbar-brand mr-auto" href="#">
-                            <img src="static/img/logo.png" alt="Site logo">
+                        <a class="navbar-brand mr-auto" href="/">
+                            <img src="static/img/logo.jpeg" alt="Site logo" height="70" width="70">
                             YTCom
                         </a>
                         <button type="button" id="nav-toggle" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#mainNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +45,7 @@
                         <div id="mainNav" class="collapse navbar-collapse tm-bg-white">
                             <ul class="navbar-nav ml-auto">
                               <li class="nav-item">
-                                <a class="nav-link" href="#">Login <span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="team"  target="_blank"><b>T</b><span class="sr-only">(current)</span></a>
                               </li>
                             </ul>
                         </div>                            
@@ -59,6 +61,7 @@
                 <polygon fill="#ee5057" points="0,0  100,0  50,60"></polygon>                   
             </svg> 
         </div>
+          
     </div>
 
     <!-- Optional JavaScript -->

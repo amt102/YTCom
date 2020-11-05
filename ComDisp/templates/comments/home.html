@@ -18,9 +18,20 @@
                                     </div>
                                     <div class="col-4">
                                     </div>
-                                    <div class="col-4 form-group tm-form-element tm-form-element-2">
+                                    {% comment %} <div class="col-4 form-group tm-form-element tm-form-element-2">
                                         <button name="anal_btn" id="get_anal" class="btn btn-primary btn-primary-cus tm-btn-search">get analysis</button>
-                                    </div>
+                                    </div> {% endcomment %}
+                                </div>
+
+                                <div class="container">
+                                    {% if messages and show_message %}
+                                    <ul class="message-notification">
+                                       {% for message in messages %}
+                                           <center><p><div class="alert alert-warning alert-dismissable">{{ message }}</p></center>
+                                       {% endfor %}
+                                    </ul>
+                                    {% endif %}
+                                    
                                 </div>
                             </form>
                     </div>                        

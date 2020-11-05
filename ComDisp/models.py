@@ -5,7 +5,7 @@ class Comment(models.Model):
     video_id = models.TextField()
     comment_id = models.TextField()
     text = models.TextField()
-    date = models.TextField()
+    date = models.DateTimeField()
     author = models.TextField()
     author_channel_url = models.URLField()
     like_count = models.IntegerField()
@@ -16,11 +16,13 @@ class Comment(models.Model):
     sentiment_stat = models.TextField(default=None)
     lang = models.CharField(max_length=10,default='en')
     isSpam = models.BooleanField(default=False)
+    # hateType = models.TextField(default='neutral')
 
-class videoInfo(models.Model):
+class videoInfo(models.Model): 
     channelId = models.TextField()
     channelIdTitle = models.TextField()
     videoId = models.TextField()
+    # videoUrl = models.TextField(default="https://www.youtube.com")
     name = models.TextField()
     description = models.TextField()
     thumbnail = models.TextField()
