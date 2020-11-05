@@ -48,13 +48,6 @@ class Plotter:
             else:
                 neutral+=1
 
-            if comment.hateType == 'hate':
-                hate+=1
-            elif comment.hateType == 'offensive':
-                offensive+=1
-            else:
-                neut+=1
-
             if comment.has_sensitive_content:
                 sensitive+=1
             if comment.isSpam:
@@ -64,8 +57,8 @@ class Plotter:
                 spaml.append(0)
         dict2 = {'date':d,'sentiment_score':s,'like_count':likes,'replies':replies,"isSpam":spaml,'dates':dtemp,'text':text}
         df2 = pd.DataFrame(dict2)
-        dict ={'type' : ['Positive', 'Negative', 'Neutral', 'Has Sensitive Info', 'No Senstive Info', 'Spam', 'Not A Spam','Hate Speech','Offensive Language','Neutral', 'Total'],
-        'number':[pos,neg,neutral,sensitive,int(total-sensitive),spam,int(total-spam),hate,offensive,neut,total] }
+        dict ={'type' : ['Positive', 'Negative', 'Neutral', 'Has Sensitive Info', 'No Senstive Info', 'Spam', 'Not A Spam', 'Total'],
+        'number':[pos,neg,neutral,sensitive,int(total-sensitive),spam,int(total-spam),total] }
         df  = pd.DataFrame(dict)
         return df,df2
 

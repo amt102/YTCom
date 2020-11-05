@@ -25,6 +25,7 @@ import pandas as pd
 import numpy as np
 import pickle
 # from sklearn.externals import joblib
+import joblib
 import matplotlib.pyplot as plt
 from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier
@@ -242,7 +243,7 @@ def getComments(video_id):
             ids,repeat,final_list = load_comments(final_list,match,ids,repeat,analyzer)
             if len(final_list)!=0:
                 final_list = detectspam(final_list)
-                final_list = hateSpeech(final_list)
+                # final_list = hateSpeech(final_list)
                 d.saveComments(final_list)
                 final_list=[]
             if(repeat>20):
@@ -255,7 +256,6 @@ def createVideoObject(vjson):
         channelId = vjson["items"][0]["snippet"]["channelId"],
         channelIdTitle = vjson["items"][0]["snippet"]["channelTitle"],
         videoId = vjson["items"][0]["id"],
-        videoUrl= "https://www.youtube.com/watch?v="+vjson["items"][0]["id"],
         name = vjson["items"][0]["snippet"]["title"],
         description = vjson['items'][0]['snippet']['description'],
         thumbnail = vjson["items"][0]["snippet"]["thumbnails"]["standard"]["url"],
