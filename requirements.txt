@@ -24,7 +24,7 @@ click==6.7
 cloudpickle==1.2.2
 colorama==0.3.7
 command-not-found==0.3
-cryptography==2.1.4
+cryptography==3.2
 cupshelpers==1.0
 cxxfilt==0.2.0
 cycler==0.10.0
