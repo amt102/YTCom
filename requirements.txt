@@ -163,7 +163,7 @@ python-debian==0.1.32
 pytube==9.6.0
 pytz==2018.3
 pyxdg==0.25
-PyYAML==3.12
+PyYAML==5.4
 pyzmq==18.1.0
 qtconsole==4.5.5
 quote==1.0
