@@ -132,7 +132,7 @@ plotly==4.5.0
 preshed==3.0.2
 prometheus-client==0.7.1
 prompt-toolkit==1.0.15
-protobuf==3.10.0
+protobuf==3.18.3
 psutil==5.4.2
 psycopg2==2.8.4
 ptyprocess==0.6.0
